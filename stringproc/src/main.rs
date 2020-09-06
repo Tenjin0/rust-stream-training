@@ -20,6 +20,11 @@ fn main() {
 
 
 fn process(string: String) -> HashMap<String, Vec<String>> {
-    let hash: HashMap<String, Vec<String>> = HashMap::new();
-    return hash;
+    // let hash: HashMap<String, Vec<String>> = HashMap::new();
+    
+    for line in string.lines() {
+        
+    }
+    // return hash;
+    todo!()
 }
