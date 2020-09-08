@@ -1,0 +1,8 @@
+[package]
+name = "list"
+version = "0.1.0"
+authors = ["Tenji <patricepetit@hotmail.com>"]
+edition = "2018"
+description = "implemtation of list from https://rust-unofficial.github.io/too-many-lists"
+
+[dependencies]
