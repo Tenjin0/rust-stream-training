@@ -1,7 +1,4 @@
-pub mod first {
-    #[derive(Debug)]
-    pub enum List<T> {
-        Nil,
-        Cons(T, Box<List<T>>),
-    }
-}
+
+pub mod first;
+pub mod second;
+pub mod zero;
