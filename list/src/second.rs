@@ -53,6 +53,37 @@ impl<T> Drop for List2<T> {
     }
 }
 
+
+pub struct IntoIter<T>(List2<T>);
+
+impl<T> List2<T> {
+
+    pub fn into_inter(self) -> IntoIter<T> {
+        IntoIter(self)
+    }
+}
+
+
+impl<T> Iterator for IntoIter<T> {
+    type Item = T;
+    
+    fn next(&mut self) -> Option<Self::Item> {
+        self.0.pop()
+    }
+}
+
+#[derive(Debug)]
+pub struct Iter<'a, T> {
+    next: Option<&'a Node2<T>>
+}
+
+impl <T> List2<T> {
+
+    pub fn iter<'a>(&'a self) -> Iter<'a, T> {
+        Iter { next: self.head.map(|node| &*node)}
+    }
+}
+
 #[cfg(test)]
 mod test {
     use super::List2;
@@ -91,6 +122,19 @@ mod test {
         assert_eq!(list.peek(), Some(&3));
         assert_eq!(list.peek_mut(), Some(&mut 3));
 
+    }
+
+    #[test]
+    fn into_iter() {
+        let mut list = List2::new();
+        list.push(1); list.push(2); list.push(3);
+
+        let mut iter = list.into_inter();
+
+        assert_eq!(iter.next(), Some(3));
+        assert_eq!(iter.next(), Some(2));
+        assert_eq!(iter.next(), Some(1));
+        assert_eq!(iter.next(), None);
     }
 
 }
