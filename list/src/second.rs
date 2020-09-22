@@ -77,13 +77,6 @@ pub struct Iter<'a, T> {
     next: Option<&'a Node2<T>>
 }
 
-impl <T> List2<T> {
-
-    pub fn iter<'a>(&'a self) -> Iter<'a, T> {
-        Iter { next: self.head.map(|node| &*node)}
-    }
-}
-
 #[cfg(test)]
 mod test {
     use super::List2;
