@@ -5,7 +5,6 @@ pub struct SimpleLinkedList<T: Debug> {
     head: Option<Box<Node<T>>>
 }
 
-
 #[derive(Debug)]
 struct Node<T> {
     val: T,
@@ -34,17 +33,23 @@ impl<T: std::fmt::Debug> SimpleLinkedList<T> {
         self.head = Some(Box::new(Node{val: val, next:self.head.take()}))
     }
 
-    pub fn push_last(&mut self, val: T) {
-        let mut p = &self.head;
-
-        while let Some(ref node) = *p {
-            println!("{:?}", p);
-            p = &node.next;
+    pub fn push_last(&mut self, val: T){
+        if self.head.is_none() {
+            self.head = Some(Box::new(Node{
+                val: val,
+                next: None
+            }))
+        } else {
+            let mut p = self.head.as_mut().unwrap();
+            loop {
+                if p.next.is_none() {
+                    break
+                } else {
+                    p = p.next.as_mut().unwrap();
+                }
+            }
+            p.next =  Some(Box::new(Node{val: val, next: None}));
         }
-        p = &mut Some(Box::new(Node{
-            val: val,
-            next: None
-        }));
     }
 
     pub fn pop(&mut self) -> Option<T> {
@@ -52,12 +57,5 @@ impl<T: std::fmt::Debug> SimpleLinkedList<T> {
             self.head = node.next;
             node.val
         })
-        // match self.head.take() {
-        //     Some(node) => {
-        //         self.head = node.next;
-        //         return Some(node.val)
-        //     },
-        //     None => None
-        // }
     }
 }
