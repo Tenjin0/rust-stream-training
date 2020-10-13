@@ -1,7 +1,6 @@
-
 #[derive(Debug)]
 pub struct List<T> {
-    head: Link<T>,
+    head: Link<T>
 }
 
 type Link<T> = Option<Box<Node<T>>>;
@@ -20,41 +19,38 @@ impl <T> List<T> {
     }
 
     pub fn push(&mut self, val: T) {
-        let node : Node<T>  = Node{
+        let new_node: Node<T> = Node {
             val: val,
             next: self.head.take()
         };
+        self.head = Some(Box::new(new_node));
 
-        self.head = Some(Box::new(node));
     }
 
     pub fn peek(&self) -> Option<&T> {
-        self.head.as_ref().map(|node| &node.val)
+        let head = self.head.as_ref();
+        // match head {
+        //     None => None,
+        //     Some(node) => {
+        //         return Some(&node.val);
+        //     }
+        // }
+        head.map(|node | &node.val)
     }
 
     pub fn peek_mut(&mut self) -> Option<&mut T> {
-        self.head.as_mut().map(|node| &mut node.val)
+        let head = self.head.as_mut();
+
+        head.map(|node| &mut node.val) 
     }
 
-
-    pub fn push_last(&mut self, val: T) {
-        if self.head.is_none() {
-            self.push(val);
+    pub fn len(&self) -> usize {
+        let mut count: usize = 0;
+        let mut current = &self.head;
+        while let Some(node) = current {
+            count = count + 1;
+            current = &node.next;
         }
-        else {
-            let mut node = self.head.as_mut().unwrap();
-            loop {
-                if node.next.is_some() {
-                    node = node.next.as_mut().unwrap();
-                } else {
-                    break
-                }
-            }
-            let new_node : Node<T> = Node{
-                val: val,
-                next:None
-            };
-            node.next = Some(Box::new(new_node));
-        }
+        return count;
     }
 }

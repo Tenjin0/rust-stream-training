@@ -8,8 +8,18 @@ fn main() {
    println!("{:?}", s);
    s.push(1);
    println!("{:?}", s);
-   s.push_last(2);
+   let peek = s.peek();
+   println!("{:?}", peek);
+
+   let p = s.peek_mut();
+
+   if let Some(val) = p {
+      *val = *val + 1;
+  }
    println!("{:?}", s);
+   s.push(3);
+   println!("{:?}", s);
+   println!("{}", s.len());
    // let mut s = SimpleLinkedList::new();
    // s.push(3);
    // s.push(2);
