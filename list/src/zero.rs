@@ -11,7 +11,8 @@ struct Node<T> {
     next: Link<T>
 }
 
-impl <T> List<T> {
+
+impl <T : std::fmt::Debug> List<T> {
     pub fn new() -> Self {
         List{
             head: None
@@ -19,29 +20,37 @@ impl <T> List<T> {
     }
 
     pub fn push(&mut self, val: T) {
-        let new_node: Node<T> = Node {
+
+        let new_node: Node<T> = Node{
             val: val,
             next: self.head.take()
         };
-        self.head = Some(Box::new(new_node));
 
+        self.head = Some(Box::new(new_node));
+    }
+
+
+    pub fn pop(&mut self) -> Option<T> {
+
+        match self.head.take() {
+            None => None,
+            Some(node) => {
+                self.head = node.next;
+                Some(node.val)
+            }
+        }
     }
 
     pub fn peek(&self) -> Option<&T> {
-        let head = self.head.as_ref();
-        // match head {
-        //     None => None,
-        //     Some(node) => {
-        //         return Some(&node.val);
-        //     }
-        // }
-        head.map(|node | &node.val)
+        self.head.as_ref().map(|node | {
+            &node.val
+        })
     }
 
     pub fn peek_mut(&mut self) -> Option<&mut T> {
-        let head = self.head.as_mut();
-
-        head.map(|node| &mut node.val) 
+        self.head.as_mut().map(|node | {
+            &mut node.val
+        })
     }
 
     pub fn len(&self) -> usize {
@@ -52,5 +61,31 @@ impl <T> List<T> {
             current = &node.next;
         }
         return count;
+    }
+
+    pub fn push_last(&mut self, val: T) {
+
+        if self.head.is_none() {
+            self.push(val);
+        }
+        else {
+            let mut current = self.head.as_mut().unwrap();
+
+            loop {
+              if current.next.is_some() {
+                current = current.next.as_mut().unwrap();
+              } else {
+                  break;
+              }
+            }
+    
+            let new_node = Node{
+                val: val,
+                next: None
+            };
+            current.next = Some(Box::new(new_node));
+    
+        }
+      
     }
 }

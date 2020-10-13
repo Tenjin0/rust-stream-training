@@ -52,6 +52,19 @@ impl<T: std::fmt::Debug> SimpleLinkedList<T> {
         }
     }
 
+    pub fn reverse(&mut self) {
+        let mut prev = None;
+        let mut current_node = self.head.take();
+
+        while let Some(mut current_node_inner) = current_node.take() {
+            let next = current_node_inner.next.take();
+            current_node_inner.next = prev.take();
+            prev = Some(current_node_inner);
+            current_node = next;
+        }
+
+        self.head = prev.take();
+    }
     pub fn pop(&mut self) -> Option<T> {
         self.head.take().map(|node| {
             self.head = node.next;
