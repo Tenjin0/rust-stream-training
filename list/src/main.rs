@@ -19,9 +19,11 @@ fn main() {
       *val = *val + 1;
   }
    println!("{:?}", s);
-   s.push(3);
+   s.push(4);
    println!("{:?}", s);
-   println!("{}", s.len());
+   println!("len: {}", s.len());
    s.push_last(2);
+   println!("{:?}", s);
+   s.reverse();
    println!("{:?}", s);
 }

@@ -88,4 +88,20 @@ impl <T : std::fmt::Debug> List<T> {
         }
       
     }
+
+    pub fn reverse(&mut self) {
+
+        let mut rev: Link<T> = None;
+
+        let mut opt_current_node = self.head.take();
+
+        while let Some(mut node) = opt_current_node.take() {
+            opt_current_node = node.next;
+            node.next = rev;
+            rev = Some(node);
+        }
+
+        self.head = rev;
+        
+    }
 }
